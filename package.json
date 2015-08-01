@@ -20,6 +20,9 @@
   "engines": {
     "atom": ">=1.0.0"
   },
+  "scripts": {
+    "test": "xo"
+  },
   "keywords": [
     "javascript",
     "linter",
@@ -29,5 +32,12 @@
   "dependencies": {
     "loophole": "^1.1.0",
     "xo": "^0.4.0"
+  },
+  "devDependencies": {
+    "xo": "*"
+  },
+  "xo": {
+    "esnext": true,
+    "ignore": ["fixture.js"]
   }
 }

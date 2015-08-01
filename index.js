@@ -1,27 +1,27 @@
 'use babel';
 import {allowUnsafeNewFunction} from 'loophole';
 
-var lintText;
+let lintText;
 allowUnsafeNewFunction(() => {
 	lintText = require('xo').lintText;
 });
 
 function lint(textEditor) {
-	var report;
+	let report;
 
 	allowUnsafeNewFunction(() => {
 		report = lintText(textEditor.getText());
 	});
 
-	var filePath = textEditor.getPath();
-	var ret = [];
+	const filePath = textEditor.getPath();
+	const ret = [];
 
 	report.results.forEach(function (result) {
 		result.messages.forEach(function (x) {
 			ret.push({
+				filePath,
 				type: x.severity === 2 ? 'Error' : 'Warning',
 				text: x.message + ' (' + x.ruleId + ')',
-				filePath: filePath,
 				range: [
 					[x.line - 1, x.column - 1],
 					[x.line - 1, x.column - 1]
@@ -33,7 +33,7 @@ function lint(textEditor) {
 	return ret;
 }
 
-export let provideLinter = () => {
+export const provideLinter = () => {
 	return {
 		grammarScopes: [
 			'source.js',
@@ -42,6 +42,6 @@ export let provideLinter = () => {
 		],
 		scope: 'file',
 		lintOnFly: true,
-		lint: lint
+		lint
 	};
 };
