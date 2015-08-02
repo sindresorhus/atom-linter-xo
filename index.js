@@ -1,4 +1,5 @@
 'use babel';
+import path from 'path';
 import {allowUnsafeNewFunction} from 'loophole';
 
 let lintText;
@@ -7,13 +8,13 @@ allowUnsafeNewFunction(() => {
 });
 
 function lint(textEditor) {
+	const filePath = textEditor.getPath();
 	let report;
 
 	allowUnsafeNewFunction(() => {
-		report = lintText(textEditor.getText());
+		report = lintText(textEditor.getText(), {cwd: path.dirname(filePath)});
 	});
 
-	const filePath = textEditor.getPath();
 	const ret = [];
 
 	report.results.forEach(function (result) {
