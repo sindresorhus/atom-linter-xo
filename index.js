@@ -1,4 +1,4 @@
-'use babel';
+/** @babel */
 import path from 'path';
 import {allowUnsafeNewFunction} from 'loophole';
 
@@ -45,4 +45,8 @@ export const provideLinter = () => {
 		lintOnFly: true,
 		lint
 	};
+};
+
+export const activate = () => {
+	require('atom-package-deps').install('linter-xo');
 };

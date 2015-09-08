@@ -5,17 +5,17 @@
   "license": "MIT",
   "repository": "sindresorhus/atom-linter-xo",
   "private": true,
+  "author": {
+    "name": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com"
+  },
   "providedServices": {
     "linter": {
       "versions": {
         "1.0.0": "provideLinter"
       }
     }
-  },
-  "author": {
-    "name": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com"
   },
   "engines": {
     "atom": ">=1.0.0"
@@ -24,18 +24,23 @@
     "test": "xo"
   },
   "keywords": [
+    "❤️",
     "javascript",
     "linter",
     "code-style",
     "xo"
   ],
   "dependencies": {
+    "atom-package-deps": "^2.0.5",
     "loophole": "^1.1.0",
     "xo": "^0.8.0"
   },
   "devDependencies": {
     "xo": "*"
   },
+  "package-deps": [
+    "linter"
+  ],
   "xo": {
     "esnext": true,
     "ignore": [
