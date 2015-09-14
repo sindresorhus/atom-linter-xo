@@ -33,7 +33,7 @@
   "dependencies": {
     "atom-package-deps": "^2.0.5",
     "loophole": "^1.1.0",
-    "xo": "^0.8.0"
+    "xo": "^0.9.0"
   },
   "devDependencies": {
     "xo": "*"
@@ -42,9 +42,6 @@
     "linter"
   ],
   "xo": {
-    "esnext": true,
-    "ignore": [
-      "fixture.js"
-    ]
+    "esnext": true
   }
 }
