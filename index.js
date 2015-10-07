@@ -36,6 +36,7 @@ function lint(textEditor) {
 
 export const provideLinter = () => {
 	return {
+		name: 'xo',
 		grammarScopes: [
 			'source.js',
 			'source.jsx',
