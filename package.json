@@ -33,7 +33,7 @@
   "dependencies": {
     "atom-package-deps": "^2.0.5",
     "loophole": "^1.1.0",
-    "xo": "^0.9.0"
+    "xo": "^0.10.0"
   },
   "devDependencies": {
     "xo": "*"
