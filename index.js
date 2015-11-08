@@ -49,5 +49,5 @@ export const provideLinter = () => {
 };
 
 export const activate = () => {
-	require('atom-package-deps').install('linter-xo');
+	require('atom-package-deps').install();
 };
