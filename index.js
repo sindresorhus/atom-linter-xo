@@ -34,19 +34,17 @@ function lint(textEditor) {
 	return ret;
 }
 
-export const provideLinter = () => {
-	return {
-		name: 'xo',
-		grammarScopes: [
-			'source.js',
-			'source.jsx',
-			'source.js.jsx'
-		],
-		scope: 'file',
-		lintOnFly: true,
-		lint
-	};
-};
+export const provideLinter = () => ({
+	name: 'xo',
+	grammarScopes: [
+		'source.js',
+		'source.jsx',
+		'source.js.jsx'
+	],
+	scope: 'file',
+	lintOnFly: true,
+	lint
+});
 
 export const activate = () => {
 	require('atom-package-deps').install();
