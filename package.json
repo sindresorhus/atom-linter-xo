@@ -35,9 +35,6 @@
     "loophole": "^1.1.0",
     "xo": "^0.11.0"
   },
-  "devDependencies": {
-    "xo": "*"
-  },
   "package-deps": [
     "linter"
   ],
