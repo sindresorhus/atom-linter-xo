@@ -1,9 +1,8 @@
 /** @babel */
 /* global atom */
 import path from 'path';
-import {fork} from 'child_process';
 import {allowUnsafeNewFunction} from 'loophole';
-import {CompositeDisposable} from 'atom';
+import {CompositeDisposable, BufferedNodeProcess} from 'atom';
 
 let lintText;
 allowUnsafeNewFunction(() => {
@@ -61,7 +60,13 @@ export function activate() {
 			}
 			const filePath = textEditor.getPath();
 			const fileDir = path.dirname(filePath);
-			fork(path.join(__dirname, 'node_modules', 'xo', 'cli.js'), [filePath, '--fix'], {cwd: fileDir});
+			new BufferedNodeProcess({
+				command: path.join(__dirname, 'node_modules', 'xo', 'cli.js'),
+				args: [filePath, '--fix'],
+				options: {
+					cwd: fileDir
+				}
+			});
 		}
 	}));
 }
