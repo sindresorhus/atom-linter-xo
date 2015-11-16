@@ -1,4 +1,5 @@
 /** @babel */
+/* global atom */
 import path from 'path';
 import {fork} from 'child_process';
 import {allowUnsafeNewFunction} from 'loophole';
@@ -52,14 +53,15 @@ export function activate() {
 	require('atom-package-deps').install();
 	this.subscriptions = new CompositeDisposable();
 	this.subscriptions.add(atom.commands.add('atom-text-editor', {
-		'linter-xo:fix-file': function() {
+		'linter-xo:fix-file': function fixFile() {
 			const textEditor = atom.workspace.getActiveTextEditor();
 			if (!textEditor || textEditor.isModified()) {
-				return // Ignore invalid or unsaved text editors
+				// Ignore invalid or unsaved text editors
+				return;
 			}
 			fork(path.join(__dirname, 'node_modules', 'xo', 'cli.js'), ['--fix', textEditor.getPath()]);
 		}
-	}))
+	}));
 }
 
 export function deactivate() {
