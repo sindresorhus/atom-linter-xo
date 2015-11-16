@@ -1,6 +1,7 @@
 /** @babel */
 import path from 'path';
 import {allowUnsafeNewFunction} from 'loophole';
+import {CompositeDisposable} from 'atom';
 
 let lintText;
 allowUnsafeNewFunction(() => {
@@ -46,6 +47,11 @@ export const provideLinter = () => ({
 	lint
 });
 
-export const activate = () => {
+export function activate() {
 	require('atom-package-deps').install();
-};
+	this.subscriptions = new CompositeDisposable();
+}
+
+export function deactivate() {
+	this.subscriptions.dispose();
+}
