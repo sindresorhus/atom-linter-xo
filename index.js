@@ -1,5 +1,6 @@
 /** @babel */
 import path from 'path';
+import {fork} from 'child_process';
 import {allowUnsafeNewFunction} from 'loophole';
 import {CompositeDisposable} from 'atom';
 
@@ -50,6 +51,15 @@ export const provideLinter = () => ({
 export function activate() {
 	require('atom-package-deps').install();
 	this.subscriptions = new CompositeDisposable();
+	this.subscriptions.add(atom.commands.add('atom-text-editor', {
+		'linter-xo:fix-file': function() {
+			const textEditor = atom.workspace.getActiveTextEditor();
+			if (!textEditor || textEditor.isModified()) {
+				return // Ignore invalid or unsaved text editors
+			}
+			fork(path.join(__dirname, 'node_modules', 'xo', 'cli.js'), ['--fix', textEditor.getPath()]);
+		}
+	}))
 }
 
 export function deactivate() {
