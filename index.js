@@ -61,7 +61,7 @@ export function activate() {
 			}
 			const filePath = textEditor.getPath();
 			const fileDir = path.dirname(filePath);
-			fork(path.join(__dirname, 'node_modules', 'xo', 'cli.js'), ['--fix', filePath], {cwd: fileDir});
+			fork(path.join(__dirname, 'node_modules', 'xo', 'cli.js'), [filePath, '--fix'], {cwd: fileDir});
 		}
 	}));
 }
