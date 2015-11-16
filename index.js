@@ -59,7 +59,9 @@ export function activate() {
 				// Ignore invalid or unsaved text editors
 				return;
 			}
-			fork(path.join(__dirname, 'node_modules', 'xo', 'cli.js'), ['--fix', textEditor.getPath()]);
+			const filePath = textEditor.getPath();
+			const fileDir = path.dirname(filePath);
+			fork(path.join(__dirname, 'node_modules', 'xo', 'cli.js'), ['--fix', filePath], {cwd: fileDir});
 		}
 	}));
 }
