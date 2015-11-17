@@ -34,7 +34,7 @@
     "atom-package-deps": "^3.0.0",
     "atom-set-text": "^1.0.1",
     "loophole": "^1.1.0",
-    "xo": "*"
+    "xo": "^0.11.1"
   },
   "package-deps": [
     "linter"
