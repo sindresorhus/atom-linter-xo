@@ -21,6 +21,11 @@ Just write some code.
 Settings can be found in the `Linter` package settings.
 
 
+## Fix
+
+Automagically fix many of the linter issues by running `XO: Fix` in the Command Palette.
+
+
 ## License
 
 MIT © [Sindre Sorhus](http://sindresorhus.com)

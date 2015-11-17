@@ -32,13 +32,17 @@
   ],
   "dependencies": {
     "atom-package-deps": "^3.0.0",
+    "atom-set-text": "^1.0.1",
     "loophole": "^1.1.0",
-    "xo": "^0.11.0"
+    "xo": "*"
   },
   "package-deps": [
     "linter"
   ],
   "xo": {
-    "esnext": true
+    "esnext": true,
+    "globals": [
+      "atom"
+    ]
   }
 }
