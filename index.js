@@ -1,6 +1,8 @@
 /** @babel */
+/* global atom */
 import path from 'path';
 import {allowUnsafeNewFunction} from 'loophole';
+import {CompositeDisposable, BufferedNodeProcess} from 'atom';
 
 let lintText;
 allowUnsafeNewFunction(() => {
@@ -46,6 +48,29 @@ export const provideLinter = () => ({
 	lint
 });
 
-export const activate = () => {
+export function activate() {
 	require('atom-package-deps').install();
-};
+	this.subscriptions = new CompositeDisposable();
+	this.subscriptions.add(atom.commands.add('atom-text-editor', {
+		'linter-xo:fix-file': function fixFile() {
+			const textEditor = atom.workspace.getActiveTextEditor();
+			if (!textEditor || textEditor.isModified()) {
+				// Ignore invalid or unsaved text editors
+				return;
+			}
+			const filePath = textEditor.getPath();
+			const fileDir = path.dirname(filePath);
+			new BufferedNodeProcess({
+				command: path.join(__dirname, 'node_modules', 'xo', 'cli.js'),
+				args: [filePath, '--fix'],
+				options: {
+					cwd: fileDir
+				}
+			});
+		}
+	}));
+}
+
+export function deactivate() {
+	this.subscriptions.dispose();
+}
