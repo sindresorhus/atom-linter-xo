@@ -13,9 +13,15 @@ function lint(textEditor) {
 	const filePath = textEditor.getPath();
 	let report;
 
+	// ugly hack to workaround ESLint's lack of a `cwd` option
+	const defaultCwd = process.cwd();
+	process.chdir(path.dirname(filePath));
+
 	allowUnsafeNewFunction(() => {
 		report = lintText(textEditor.getText(), {cwd: path.dirname(filePath)});
 	});
+
+	process.chdir(defaultCwd);
 
 	const ret = [];
 
