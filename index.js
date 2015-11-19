@@ -3,6 +3,7 @@ import path from 'path';
 import {CompositeDisposable} from 'atom';
 import {allowUnsafeNewFunction} from 'loophole';
 import setText from 'atom-set-text';
+import pkgDir from 'pkg-dir';
 
 let lintText;
 allowUnsafeNewFunction(() => {
@@ -13,12 +14,14 @@ function lint(textEditor) {
 	const filePath = textEditor.getPath();
 	let report;
 
+	const dir = pkgDir.sync(path.dirname(filePath));
+
 	// ugly hack to workaround ESLint's lack of a `cwd` option
 	const defaultCwd = process.cwd();
-	process.chdir(path.dirname(filePath));
+	process.chdir(dir);
 
 	allowUnsafeNewFunction(() => {
-		report = lintText(textEditor.getText(), {cwd: path.dirname(filePath)});
+		report = lintText(textEditor.getText(), {cwd: dir});
 	});
 
 	process.chdir(defaultCwd);
