@@ -33,6 +33,7 @@
   "dependencies": {
     "atom-package-deps": "^3.0.0",
     "atom-set-text": "^1.0.1",
+    "load-json-file": "^1.1.0",
     "loophole": "^1.1.0",
     "pkg-dir": "^1.0.0",
     "xo": "^0.12.0"
