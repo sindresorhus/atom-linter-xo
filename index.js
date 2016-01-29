@@ -4,6 +4,7 @@ import {CompositeDisposable} from 'atom';
 import {allowUnsafeNewFunction} from 'loophole';
 import setText from 'atom-set-text';
 import pkgDir from 'pkg-dir';
+import {sync as loadJson} from 'load-json-file';
 
 let lintText;
 allowUnsafeNewFunction(() => {
@@ -16,9 +17,20 @@ function lint(textEditor) {
 
 	const dir = pkgDir.sync(path.dirname(filePath));
 
+	// no package.json
+	if (!dir) {
+		return [];
+	}
+
 	// ugly hack to workaround ESLint's lack of a `cwd` option
 	const defaultCwd = process.cwd();
 	process.chdir(dir);
+
+	// check if package.json has dependency or devDependency
+	const pkg = loadJson('package.json');
+	if (!pkg.dependencies.xo && !pkg.devDependencies.xo) {
+		return [];
+	}
 
 	allowUnsafeNewFunction(() => {
 		report = lintText(textEditor.getText(), {cwd: dir});
