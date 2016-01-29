@@ -1,10 +1,10 @@
 /** @babel */
-import fs from 'fs';
 import path from 'path';
 import {CompositeDisposable} from 'atom';
 import {allowUnsafeNewFunction} from 'loophole';
 import setText from 'atom-set-text';
 import pkgDir from 'pkg-dir';
+import {sync as loadJson} from 'load-json-file';
 
 let lintText;
 allowUnsafeNewFunction(() => {
@@ -22,16 +22,15 @@ function lint(textEditor) {
 		return [];
 	}
 
-	// check if package.json has 'xo'
-	const rgx = new RegExp('xo', 'g');
-	const pkg = fs.readFileSync(path.join(dir, 'package.json'), 'utf8');
-	if (!rgx.test(pkg)) {
-		return [];
-	}
-
 	// ugly hack to workaround ESLint's lack of a `cwd` option
 	const defaultCwd = process.cwd();
 	process.chdir(dir);
+
+	// check if package.json has dependency or devDependency
+	const pkg = loadJson('package.json');
+	if (!pkg.dependencies.xo && !pkg.devDependencies.xo) {
+		return [];
+	}
 
 	allowUnsafeNewFunction(() => {
 		report = lintText(textEditor.getText(), {cwd: dir});
