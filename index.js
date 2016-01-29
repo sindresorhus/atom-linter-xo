@@ -16,6 +16,11 @@ function lint(textEditor) {
 
 	const dir = pkgDir.sync(path.dirname(filePath));
 
+	// no package.json
+	if (!dir) {
+		return [];
+	}
+
 	// ugly hack to workaround ESLint's lack of a `cwd` option
 	const defaultCwd = process.cwd();
 	process.chdir(dir);
