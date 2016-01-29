@@ -1,4 +1,5 @@
 /** @babel */
+import fs from 'fs';
 import path from 'path';
 import {CompositeDisposable} from 'atom';
 import {allowUnsafeNewFunction} from 'loophole';
@@ -18,6 +19,13 @@ function lint(textEditor) {
 
 	// no package.json
 	if (!dir) {
+		return [];
+	}
+
+	// check if package.json has 'xo'
+	const rgx = new RegExp('xo', 'g');
+	const pkg = fs.readFileSync(path.join(dir, 'package.json'), 'utf8');
+	if (!rgx.test(pkg)) {
 		return [];
 	}
 
