@@ -26,9 +26,11 @@ function lint(textEditor) {
 	const defaultCwd = process.cwd();
 	process.chdir(dir);
 
-	// check if package.json has dependency or devDependency
-	const pkg = loadJson('package.json');
-	if (!pkg.dependencies.xo && !pkg.devDependencies.xo) {
+	const pkg = loadJson(path.join(dir, 'package.json'));
+
+	// only lint when `xo` is a dependency
+	if (!(pkg.dependencies && pkg.dependencies.xo) &&
+		!(pkg.devDependencies && pkg.devDependencies.xo)) {
 		return [];
 	}
 
