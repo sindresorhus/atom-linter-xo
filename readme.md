@@ -18,7 +18,9 @@ Or, Settings → Install → Search for `linter-xo`.
 
 Just write some code.
 
-Settings can be found in the `Linter` package settings.
+Settings can be found in the `Linter` package settings. XO [config](https://github.com/sindresorhus/xo#config) should be defined in package.json.
+
+Note that it will only lint when XO is a dependency/devDependency in package.json.
 
 
 ## Fix
