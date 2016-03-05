@@ -66,7 +66,7 @@ export const provideLinter = () => ({
 });
 
 export function activate() {
-	require('atom-package-deps').install();
+	require('atom-package-deps').install('linter-xo');
 
 	this.subscriptions = new CompositeDisposable();
 	this.subscriptions.add(atom.commands.add('atom-text-editor', {
