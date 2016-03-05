@@ -92,7 +92,11 @@ export function activate() {
 				});
 			});
 
-			setText(report.results[0].output);
+			const output = report.results[0].output;
+
+			if (output) {
+				setText(output);
+			}
 		}
 	}));
 }
