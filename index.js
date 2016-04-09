@@ -22,6 +22,11 @@ function lint(textEditor) {
 		return [];
 	}
 
+	// ugly hack to workaround ESLint's lack of a `cwd` option
+	// TODO: remove this when https://github.com/sindresorhus/atom-linter-xo/issues/19 is resolved
+	const defaultCwd = process.cwd();
+	process.chdir(dir);
+
 	const pkg = loadJson(path.join(dir, 'package.json'));
 
 	// only lint when `xo` is a dependency
@@ -33,6 +38,8 @@ function lint(textEditor) {
 	allowUnsafeNewFunction(() => {
 		report = lintText(textEditor.getText(), {cwd: dir});
 	});
+
+	process.chdir(defaultCwd);
 
 	const ret = [];
 
