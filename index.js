@@ -36,7 +36,10 @@ function lint(textEditor) {
 	}
 
 	allowUnsafeNewFunction(() => {
-		report = lintText(textEditor.getText(), {cwd: dir});
+		report = lintText(textEditor.getText(), {
+			cwd: dir,
+			filename: filePath
+		});
 	});
 
 	process.chdir(defaultCwd);
