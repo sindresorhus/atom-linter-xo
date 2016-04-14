@@ -13,8 +13,6 @@ allowUnsafeNewFunction(() => {
 
 function lint(textEditor) {
 	const filePath = textEditor.getPath();
-	let report;
-
 	const dir = pkgDir.sync(path.dirname(filePath));
 
 	// no package.json
@@ -35,6 +33,7 @@ function lint(textEditor) {
 		return [];
 	}
 
+	let report;
 	allowUnsafeNewFunction(() => {
 		report = lintText(textEditor.getText(), {
 			cwd: dir,
@@ -44,36 +43,30 @@ function lint(textEditor) {
 
 	process.chdir(defaultCwd);
 
-	const ret = [];
-
-	report.results.forEach(result => {
-		result.messages.forEach(x => {
-			ret.push({
-				filePath,
-				type: x.severity === 2 ? 'Error' : 'Warning',
-				text: `${x.message} (${x.ruleId})`,
-				range: [
-					[x.line - 1, x.column - 1],
-					[x.line - 1, x.column - 1]
-				]
-			});
-		});
-	});
-
-	return ret;
+	return report.results[0].messages.map(x => ({
+		filePath,
+		type: x.severity === 2 ? 'Error' : 'Warning',
+		text: `${x.message} (${x.ruleId})`,
+		range: [
+			[x.line - 1, x.column - 1],
+			[x.line - 1, x.column - 1]
+		]
+	}));
 }
 
-export const provideLinter = () => ({
-	name: 'xo',
-	grammarScopes: [
-		'source.js',
-		'source.jsx',
-		'source.js.jsx'
-	],
-	scope: 'file',
-	lintOnFly: true,
-	lint
-});
+export function provideLinter() {
+	return {
+		name: 'XO',
+		grammarScopes: [
+			'source.js',
+			'source.jsx',
+			'source.js.jsx'
+		],
+		scope: 'file',
+		lintOnFly: true,
+		lint
+	};
+}
 
 export function activate() {
 	require('atom-package-deps').install('linter-xo');
