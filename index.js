@@ -1,6 +1,6 @@
 /** @babel */
 import path from 'path';
-import {CompositeDisposable} from 'atom';
+import {CompositeDisposable, Range} from 'atom';
 import {allowUnsafeNewFunction} from 'loophole';
 import setText from 'atom-set-text';
 import pkgDir from 'pkg-dir';
@@ -43,15 +43,32 @@ function lint(textEditor) {
 
 	process.chdir(defaultCwd);
 
-	return report.results[0].messages.map(x => ({
-		filePath,
-		type: x.severity === 2 ? 'Error' : 'Warning',
-		text: `${x.message} (${x.ruleId})`,
-		range: [
-			[x.line - 1, x.column - 1],
-			[x.line - 1, x.column - 1]
-		]
-	}));
+	const textBuffer = textEditor.getBuffer();
+
+	return report.results[0].messages.map(x => {
+		let fix;
+
+		if (x.fix) {
+			fix = {
+				range: new Range(
+					textBuffer.positionForCharacterIndex(x.fix.range[0]),
+					textBuffer.positionForCharacterIndex(x.fix.range[1])
+				),
+				newText: x.fix.text
+			};
+		}
+
+		return {
+			filePath,
+			fix,
+			type: x.severity === 2 ? 'Error' : 'Warning',
+			text: `${x.message} (${x.ruleId})`,
+			range: [
+				[x.line - 1, x.column - 1],
+				[x.line - 1, x.column - 1]
+			]
+		};
+	});
 }
 
 export function provideLinter() {
