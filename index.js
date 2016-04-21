@@ -58,16 +58,21 @@ function lint(textEditor) {
 			};
 		}
 
-		return {
+		const r = {
 			filePath,
 			fix,
 			type: x.severity === 2 ? 'Error' : 'Warning',
-			text: `${x.message} (${x.ruleId})`,
-			range: [
+			text: `${x.message} (${x.ruleId})`
+		};
+
+		if (typeof x.line === 'number' && typeof x.column === 'number') {
+			r.range = [
 				[x.line - 1, x.column - 1],
 				[x.line - 1, x.column - 1]
-			]
-		};
+			];
+		}
+
+		return r;
 	});
 }
 
