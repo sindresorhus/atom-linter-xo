@@ -58,16 +58,22 @@ function lint(textEditor) {
 			};
 		}
 
-		return {
+		const ret = {
 			filePath,
 			fix,
 			type: x.severity === 2 ? 'Error' : 'Warning',
-			text: `${x.message} (${x.ruleId})`,
-			range: [
+			text: `${x.message} (${x.ruleId})`
+		};
+
+		// some messages don't have these
+		if (typeof x.line === 'number' && typeof x.column === 'number') {
+			ret.range = [
 				[x.line - 1, x.column - 1],
 				[x.line - 1, x.column - 1]
-			]
-		};
+			];
+		}
+
+		return ret;
 	});
 }
 
