@@ -45,6 +45,9 @@
     "esnext": true,
     "globals": [
       "atom"
-    ]
+    ],
+    "rules": {
+      "import/no-extraneous-dependencies": 0
+    }
   }
 }
