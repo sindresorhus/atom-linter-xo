@@ -63,7 +63,7 @@ function lint(textEditor) {
 			filePath,
 			fix,
 			type: x.severity === 2 ? 'Error' : 'Warning',
-			html: `<span>${x.message} (<a href=${ruleURI(x.ruleId).url}>${x.ruleId}</a>)</span>`
+			html: `<span>${x.message} (<a href=${ruleURI(x.ruleId || '').url}>${x.ruleId}</a>)</span>`
 		};
 
 		// some messages don't have these
