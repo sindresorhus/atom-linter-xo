@@ -5,6 +5,7 @@ import {allowUnsafeNewFunction} from 'loophole';
 import setText from 'atom-set-text';
 import pkgDir from 'pkg-dir';
 import {sync as loadJson} from 'load-json-file';
+import ruleURI from 'eslint-rule-documentation';
 
 let lintText;
 allowUnsafeNewFunction(() => {
@@ -62,7 +63,7 @@ function lint(textEditor) {
 			filePath,
 			fix,
 			type: x.severity === 2 ? 'Error' : 'Warning',
-			text: `${x.message} (${x.ruleId})`
+			html: `<span>${x.message} (<a href=${ruleURI(x.ruleId).url}>${x.ruleId}</a>)</span>`
 		};
 
 		// some messages don't have these

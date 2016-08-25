@@ -33,6 +33,7 @@
   "dependencies": {
     "atom-package-deps": "^4.0.1",
     "atom-set-text": "^1.0.1",
+    "eslint-rule-documentation": "^1.0.0",
     "load-json-file": "^1.1.0",
     "loophole": "^1.1.0",
     "pkg-dir": "^1.0.0",
