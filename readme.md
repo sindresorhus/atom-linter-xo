@@ -20,7 +20,9 @@ Just write some code.
 
 Settings can be found in the `Linter` package settings. XO [config](https://github.com/sindresorhus/xo#config) should be defined in package.json.
 
-Note that it will only lint when XO is a dependency/devDependency in package.json.
+**Note that it will only lint when XO is a dependency/devDependency in package.json.**<br>
+To ensure it doesn't activate and conflict on projects using another linter, like ESLint.<br>
+[We're considering a way to manually enable XO.](https://github.com/sindresorhus/atom-linter-xo/issues/21)
 
 
 ## Fix
