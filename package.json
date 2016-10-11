@@ -4,19 +4,12 @@
   "description": "Linter for XO",
   "license": "MIT",
   "repository": "sindresorhus/atom-linter-xo",
-  "private": true,
   "author": {
     "name": "Sindre Sorhus",
     "email": "sindresorhus@gmail.com",
     "url": "sindresorhus.com"
   },
-  "providedServices": {
-    "linter": {
-      "versions": {
-        "1.0.0": "provideLinter"
-      }
-    }
-  },
+  "private": true,
   "engines": {
     "atom": ">=1.0.11"
   },
@@ -24,9 +17,9 @@
     "test": "xo"
   },
   "keywords": [
-    "❤️",
     "javascript",
     "linter",
+    "eslint",
     "code-style",
     "xo"
   ],
@@ -37,18 +30,22 @@
     "load-json-file": "^2.0.0",
     "loophole": "^1.1.0",
     "pkg-dir": "^1.0.0",
-    "xo": "^0.16.0"
+    "xo": "^0.17.0"
   },
   "package-deps": [
     "linter"
   ],
+  "providedServices": {
+    "linter": {
+      "versions": {
+        "1.0.0": "provideLinter"
+      }
+    }
+  },
   "xo": {
     "esnext": true,
     "globals": [
       "atom"
-    ],
-    "rules": {
-      "import/no-extraneous-dependencies": 0
-    }
+    ]
   }
 }
