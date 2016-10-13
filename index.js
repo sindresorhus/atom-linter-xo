@@ -14,7 +14,7 @@ allowUnsafeNewFunction(() => {
 
 function lint(textEditor) {
 	const filePath = textEditor.getPath();
-	const dir = pkgDir.sync(path.dirname(filePath));
+	let dir = pkgDir.sync(path.dirname(filePath));
 
 	// no package.json
 	if (!dir) {
@@ -26,7 +26,13 @@ function lint(textEditor) {
 	const defaultCwd = process.cwd();
 	process.chdir(dir);
 
-	const pkg = loadJson(path.join(dir, 'package.json'));
+	let pkg = loadJson(path.join(dir, 'package.json'));
+
+	// get the parent `package.json` if there's a `"xo": false` in the current one
+	if (pkg.xo !== undefined && pkg.xo === false) {
+		dir = path.join(dir, '..');
+		pkg = loadJson(path.join(dir, 'package.json'));
+	}
 
 	// only lint when `xo` is a dependency
 	if (!(pkg.dependencies && pkg.dependencies.xo) &&
