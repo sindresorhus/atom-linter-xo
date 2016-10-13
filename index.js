@@ -30,7 +30,7 @@ function lint(textEditor) {
 
 	// get the parent `package.json` if there's a `"xo": false` in the current one
 	if (pkg.xo !== undefined && pkg.xo === false) {
-		dir = path.join(dir, '..');
+		dir = pkgDir.sync(path.join(dir, '..'));
 		pkg = loadJson(path.join(dir, 'package.json'));
 	}
 
