@@ -29,11 +29,14 @@ function lint(textEditor) {
 	let pkg = loadJson(path.join(dir, 'package.json'));
 
 	// get the parent `package.json` if there's a `"xo": false` in the current one
-	if (pkg.xo !== undefined) {
-		while (pkg.xo === false && dir !== null) {
-			dir = pkgDir.sync(path.join(dir, '..'));
-			pkg = dir === null ? pkg : loadJson(path.join(dir, 'package.json'));
-		}
+	while (pkg.xo === false && dir !== null) {
+		dir = pkgDir.sync(path.join(dir, '..'));
+		pkg = dir === null ? pkg : loadJson(path.join(dir, 'package.json'));
+	}
+
+	// `pkg.xo === false` && xo is a dependency && there's no parent `package.json`
+	if (dir === null) {
+		return [];
 	}
 
 	// only lint when `xo` is a dependency
