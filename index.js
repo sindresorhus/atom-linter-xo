@@ -21,11 +21,6 @@ function lint(textEditor) {
 		return [];
 	}
 
-	// ugly hack to workaround ESLint's lack of a `cwd` option
-	// TODO: remove this when https://github.com/sindresorhus/atom-linter-xo/issues/19 is resolved
-	const defaultCwd = process.cwd();
-	process.chdir(dir);
-
 	let pkg = loadJson(path.join(dir, 'package.json'));
 
 	// get the parent `package.json` if there's a `"xo": false` in the current one
@@ -44,6 +39,11 @@ function lint(textEditor) {
 		!(pkg.devDependencies && pkg.devDependencies.xo)) {
 		return [];
 	}
+
+	// ugly hack to workaround ESLint's lack of a `cwd` option
+	// TODO: remove this when https://github.com/sindresorhus/atom-linter-xo/issues/19 is resolved
+	const defaultCwd = process.cwd();
+	process.chdir(dir);
 
 	let report;
 	allowUnsafeNewFunction(() => {
