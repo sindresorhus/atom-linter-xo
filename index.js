@@ -6,6 +6,7 @@ import setText from 'atom-set-text';
 import pkgDir from 'pkg-dir';
 import {sync as loadJson} from 'load-json-file';
 import ruleURI from 'eslint-rule-documentation';
+import {rangeFromLineNumber} from 'atom-linter';
 
 let lintText;
 allowUnsafeNewFunction(() => {
@@ -70,20 +71,26 @@ function lint(textEditor) {
 			};
 		}
 
+		// taken from linter-eslint
+		let range;
+		const msgLine = x.line - 1;
+		if (typeof x.endColumn === 'number' && typeof x.endLine === 'number') {
+			const msgCol = Math.max(0, x.column - 1);
+			range = [[msgLine, msgCol], [x.endLine - 1, x.endColumn - 1]];
+		} else if (typeof x.line === 'number' && typeof x.column === 'number') {
+			// We want msgCol to remain undefined if it was initially so
+			// `rangeFromLineNumber` will give us a range over the entire line
+			const msgCol = typeof x.column === 'undefined' ? x.column : x.column - 1;
+			range = rangeFromLineNumber(textEditor, msgLine, msgCol);
+		}
+
 		const ret = {
 			filePath,
 			fix,
 			type: x.severity === 2 ? 'Error' : 'Warning',
-			html: `<span>${x.message} (<a href=${ruleURI(x.ruleId || '').url}>${x.ruleId}</a>)</span>`
+			html: `<span>${x.message} (<a href=${ruleURI(x.ruleId || '').url}>${x.ruleId}</a>)</span>`,
+			range
 		};
-
-		// some messages don't have these
-		if (typeof x.line === 'number' && typeof x.column === 'number') {
-			ret.range = [
-				[x.line - 1, x.column - 1],
-				[x.line - 1, x.column - 1]
-			];
-		}
 
 		return ret;
 	});
