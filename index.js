@@ -74,14 +74,18 @@ function lint(textEditor) {
 		// taken from linter-eslint
 		let range;
 		const msgLine = x.line - 1;
-		if (typeof x.endColumn === 'number' && typeof x.endLine === 'number') {
-			const msgCol = Math.max(0, x.column - 1);
-			range = [[msgLine, msgCol], [x.endLine - 1, x.endColumn - 1]];
-		} else if (typeof x.line === 'number' && typeof x.column === 'number') {
-			// We want msgCol to remain undefined if it was initially so
-			// `rangeFromLineNumber` will give us a range over the entire line
-			const msgCol = typeof x.column === 'undefined' ? x.column : x.column - 1;
-			range = rangeFromLineNumber(textEditor, msgLine, msgCol);
+		try {
+			if (typeof x.endColumn === 'number' && typeof x.endLine === 'number') {
+				const msgCol = Math.max(0, x.column - 1);
+				range = [[msgLine, msgCol], [x.endLine - 1, x.endColumn - 1]];
+			} else if (typeof x.line === 'number' && typeof x.column === 'number') {
+				// We want msgCol to remain undefined if it was initially so
+				// `rangeFromLineNumber` will give us a range over the entire line
+				const msgCol = typeof x.column === 'undefined' ? x.column : x.column - 1;
+				range = rangeFromLineNumber(textEditor, msgLine, msgCol);
+			}
+		} catch (err) {
+			throw new Error(`Cannot mark location in editor for (${x.ruleId}) - (${x.message}) at line (${x.line}) column (${x.column})`);
 		}
 
 		const ret = {
