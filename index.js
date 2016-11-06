@@ -7,6 +7,12 @@ import pkgDir from 'pkg-dir';
 import {sync as loadJson} from 'load-json-file';
 import ruleURI from 'eslint-rule-documentation';
 
+const SUPPORTED_SCOPES = [
+	'source.js',
+	'source.jsx',
+	'source.js.jsx'
+];
+
 let lintText;
 allowUnsafeNewFunction(() => {
 	lintText = require('xo').lintText;
@@ -89,14 +95,33 @@ function lint(textEditor) {
 	});
 }
 
+const fix = () => {
+	const editor = atom.workspace.getActiveTextEditor();
+
+	if (!editor) {
+		return;
+	}
+
+	let report;
+
+	allowUnsafeNewFunction(() => {
+		report = lintText(editor.getText(), {
+			fix: true,
+			cwd: path.dirname(editor.getPath())
+		});
+	});
+
+	const output = report.results[0].output;
+
+	if (output) {
+		setText(output);
+	}
+};
+
 export function provideLinter() {
 	return {
 		name: 'XO',
-		grammarScopes: [
-			'source.js',
-			'source.jsx',
-			'source.js.jsx'
-		],
+		grammarScopes: SUPPORTED_SCOPES,
 		scope: 'file',
 		lintOnFly: true,
 		lint
@@ -108,31 +133,28 @@ export function activate() {
 
 	this.subscriptions = new CompositeDisposable();
 	this.subscriptions.add(atom.commands.add('atom-text-editor', {
-		'XO:Fix': () => {
-			const editor = atom.workspace.getActiveTextEditor();
-
-			if (!editor) {
-				return;
-			}
-
-			let report;
-
-			allowUnsafeNewFunction(() => {
-				report = lintText(editor.getText(), {
-					fix: true,
-					cwd: path.dirname(editor.getPath())
-				});
-			});
-
-			const output = report.results[0].output;
-
-			if (output) {
-				setText(output);
-			}
-		}
+		'XO:Fix': fix
 	}));
+
+	atom.workspace.observeTextEditors(editor => {
+		editor.getBuffer().onWillSave(() => {
+			const isJS = SUPPORTED_SCOPES.includes(editor.getGrammar().scopeName);
+			const shouldFixOnSave = atom.config.get('linter-xo.fixOnSave');
+
+			if (isJS && shouldFixOnSave) {
+				fix();
+			}
+		});
+	});
 }
 
 export function deactivate() {
 	this.subscriptions.dispose();
 }
+
+export const config = {
+	fixOnSave: {
+		type: 'boolean',
+		default: false
+	}
+};
