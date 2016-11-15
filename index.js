@@ -68,6 +68,10 @@ function getEditorFormat(editor) {
 	const filePath = editor.getPath();
 
 	return report => {
+		if (!report) {
+			return [];
+		}
+
 		const [result] = report.results;
 		return result.messages.map(message => {
 			return {
@@ -87,13 +91,13 @@ function getEditorLint(editor) {
 		const packageDirectory = pkgDir.sync(path.dirname(filePath));
 
 		if (!packageDirectory) {
-			return [];
+			return Promise.resolve();
 		}
 
 		const pkg = getXOPackageJson(packageDirectory);
 
 		if (pkg.dir === null) {
-			return [];
+			return Promise.resolve();
 		}
 
 		const deps = pkg.data.dependencies || {};
@@ -101,7 +105,7 @@ function getEditorLint(editor) {
 
 		// only lint when `xo` is a dependency
 		if (!('xo' in deps) && !('xo' in devDeps)) {
-			return [];
+			return Promise.resolve();
 		}
 
 		const opts = {cwd: pkg.dir, config: pkg.data.xo, filename: editor.getPath()};
