@@ -24,12 +24,17 @@
     "xo"
   ],
   "dependencies": {
+    "arson": "^0.2.3",
     "atom-package-deps": "^4.0.1",
     "atom-set-text": "^1.0.1",
     "eslint-rule-documentation": "^1.0.0",
+    "is-builtin-module": "^1.0.0",
     "load-json-file": "^2.0.0",
-    "loophole": "^1.1.0",
     "pkg-dir": "^1.0.0",
+    "proxyquire": "^1.7.10",
+    "resolve": "^1.1.7",
+    "serialize-error": "^2.0.0",
+    "uuid": "^2.0.3",
     "xo": "^0.17.0"
   },
   "package-deps": [
