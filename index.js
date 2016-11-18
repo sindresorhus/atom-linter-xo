@@ -18,15 +18,14 @@ allowUnsafeNewFunction(() => {
 	lintText = require('xo').lintText;
 });
 
-function lint(textEditor) {
-	const filePath = textEditor.getPath();
-	let dir = pkgDir.sync(path.dirname(filePath));
+function xoInPkg(pkg) {
+	const isDep = pkg.dependencies && pkg.dependencies.xo;
+	const isDevDep = pkg.devDependencies && pkg.devDependencies.xo;
 
-	// no package.json
-	if (!dir) {
-		return [];
-	}
+	return isDep || isDevDep;
+}
 
+function findPkg(dir) {
 	let pkg = loadJson(path.join(dir, 'package.json'));
 
 	// get the parent `package.json` if there's a `"xo": false` in the current one
@@ -35,26 +34,32 @@ function lint(textEditor) {
 		pkg = dir === null ? pkg : loadJson(path.join(dir, 'package.json'));
 	}
 
-	// `pkg.xo === false` && xo is a dependency && there's no parent `package.json`
-	if (dir === null) {
+	return {pkg, dir};
+}
+
+function lint(textEditor) {
+	const filePath = textEditor.getPath();
+	const currentDir = pkgDir.sync(path.dirname(filePath));
+
+	if (currentDir === null) {
 		return [];
 	}
 
-	// only lint when `xo` is a dependency
-	if (!(pkg.dependencies && pkg.dependencies.xo) &&
-		!(pkg.devDependencies && pkg.devDependencies.xo)) {
+	const {pkg, rootDir} = findPkg(currentDir);
+
+	if (!rootDir || rootDir === null || !xoInPkg(pkg)) {
 		return [];
 	}
 
 	// ugly hack to workaround ESLint's lack of a `cwd` option
 	// TODO: remove this when https://github.com/sindresorhus/atom-linter-xo/issues/19 is resolved
 	const defaultCwd = process.cwd();
-	process.chdir(dir);
+	process.chdir(rootDir);
 
 	let report;
 	allowUnsafeNewFunction(() => {
 		report = lintText(textEditor.getText(), {
-			cwd: dir,
+			cwd: rootDir,
 			filename: filePath
 		});
 	});
@@ -95,10 +100,11 @@ function lint(textEditor) {
 	});
 }
 
-const fix = () => {
-	const editor = atom.workspace.getActiveTextEditor();
+function fix(editor) {
+	const filePath = editor.getPath();
+	const {pkg} = findPkg(pkgDir.sync(path.dirname(filePath)));
 
-	if (!editor) {
+	if (!editor || !xoInPkg(pkg)) {
 		return;
 	}
 
@@ -116,7 +122,7 @@ const fix = () => {
 	if (output) {
 		setText(output);
 	}
-};
+}
 
 export function provideLinter() {
 	return {
@@ -133,19 +139,22 @@ export function activate() {
 
 	this.subscriptions = new CompositeDisposable();
 	this.subscriptions.add(atom.commands.add('atom-text-editor', {
-		'XO:Fix': fix
+		'XO:Fix': () => fix(atom.workspace.getActiveTextEditor())
 	}));
 
-	atom.workspace.observeTextEditors(editor => {
-		editor.getBuffer().onWillSave(() => {
-			const isJS = SUPPORTED_SCOPES.includes(editor.getGrammar().scopeName);
-			const shouldFixOnSave = atom.config.get('linter-xo.fixOnSave');
+	this.subscriptions.add(
+		atom.workspace.observeTextEditors(editor => {
+			editor.getBuffer().onWillSave(() => {
+				const isJS = SUPPORTED_SCOPES.includes(editor.getGrammar().scopeName);
+				const shouldFixOnSave = atom.config.get('linter-xo.fixOnSave');
+				const dependsOnXO = true;
 
-			if (isJS && shouldFixOnSave) {
-				fix();
-			}
-		});
-	});
+				if (isJS && shouldFixOnSave && dependsOnXO) {
+					fix(editor);
+				}
+			});
+		})
+	);
 }
 
 export function deactivate() {
