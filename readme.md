@@ -24,10 +24,15 @@ Settings can be found in the `Linter` package settings. XO [config](https://gith
 This is to ensure it doesn't activate and conflict on projects using another linter, like ESLint.<br>
 [We're considering a way to manually enable XO.](https://github.com/sindresorhus/atom-linter-xo/issues/21)
 
-
-## Fix
+### Fix
 
 Automagically fix many of the linter issues by running `XO: Fix` in the Command Palette.
+
+#### Fix on save
+
+You can also have it fix the code when you save the file. *(Only when XO is used in the project)*
+
+Enable it by going to; Settings → Packages → linter-xo → Settings, and then checking `Fix On Save`.
 
 
 ## License
