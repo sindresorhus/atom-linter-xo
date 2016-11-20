@@ -41,25 +41,25 @@ function lint(textEditor) {
 	const filePath = textEditor.getPath();
 	const currentDir = pkgDir.sync(path.dirname(filePath));
 
-	if (currentDir === null) {
+	if (!currentDir) {
 		return [];
 	}
 
-	const {pkg, rootDir} = findPkg(currentDir);
+	const {pkg, dir} = findPkg(currentDir);
 
-	if (!rootDir || rootDir === null || !xoInPkg(pkg)) {
+	if (dir === null || !xoInPkg(pkg)) {
 		return [];
 	}
 
 	// ugly hack to workaround ESLint's lack of a `cwd` option
 	// TODO: remove this when https://github.com/sindresorhus/atom-linter-xo/issues/19 is resolved
 	const defaultCwd = process.cwd();
-	process.chdir(rootDir);
+	process.chdir(dir);
 
 	let report;
 	allowUnsafeNewFunction(() => {
 		report = lintText(textEditor.getText(), {
-			cwd: rootDir,
+			cwd: dir,
 			filename: filePath
 		});
 	});
@@ -101,10 +101,7 @@ function lint(textEditor) {
 }
 
 function fix(editor) {
-	const filePath = editor.getPath();
-	const {pkg} = findPkg(pkgDir.sync(path.dirname(filePath)));
-
-	if (!editor || !xoInPkg(pkg)) {
+	if (!editor) {
 		return;
 	}
 
@@ -147,7 +144,10 @@ export function activate() {
 			editor.getBuffer().onWillSave(() => {
 				const isJS = SUPPORTED_SCOPES.includes(editor.getGrammar().scopeName);
 				const shouldFixOnSave = atom.config.get('linter-xo.fixOnSave');
-				const dependsOnXO = true;
+
+				const filePath = editor.getPath();
+				const {pkg} = findPkg(pkgDir.sync(path.dirname(filePath)));
+				const dependsOnXO = pkg && xoInPkg(pkg);
 
 				if (isJS && shouldFixOnSave && dependsOnXO) {
 					fix(editor);
