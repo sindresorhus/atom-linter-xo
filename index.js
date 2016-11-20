@@ -84,7 +84,7 @@ function lint(textEditor) {
 			try {
 				range = rangeFromLineNumber(textEditor, msgLine, msgCol);
 			} catch (err) {
-				throw new Error(`Cannot mark location in editor for (${x.ruleId}) - (${x.message}) at line (${x.line}) column (${x.column})`);
+				throw new Error(`Error getting range, this is most likely an issue with ESLint. (${x.ruleId} - ${x.message} at ${x.line}:${x.column})`);
 			}
 		}
 
