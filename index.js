@@ -8,20 +8,25 @@ import {sync as loadJson} from 'load-json-file';
 import ruleURI from 'eslint-rule-documentation';
 import {rangeFromLineNumber} from 'atom-linter';
 
+const SUPPORTED_SCOPES = [
+	'source.js',
+	'source.jsx',
+	'source.js.jsx'
+];
+
 let lintText;
 allowUnsafeNewFunction(() => {
 	lintText = require('xo').lintText;
 });
 
-function lint(textEditor) {
-	const filePath = textEditor.getPath();
-	let dir = pkgDir.sync(path.dirname(filePath));
+function xoInPkg(pkg) {
+	const isDep = pkg.dependencies && pkg.dependencies.xo;
+	const isDevDep = pkg.devDependencies && pkg.devDependencies.xo;
 
-	// no package.json
-	if (!dir) {
-		return [];
-	}
+	return isDep || isDevDep;
+}
 
+function findPkg(dir) {
 	let pkg = loadJson(path.join(dir, 'package.json'));
 
 	// get the parent `package.json` if there's a `"xo": false` in the current one
@@ -30,14 +35,20 @@ function lint(textEditor) {
 		pkg = dir === null ? pkg : loadJson(path.join(dir, 'package.json'));
 	}
 
-	// `pkg.xo === false` && xo is a dependency && there's no parent `package.json`
-	if (dir === null) {
+	return {pkg, dir};
+}
+
+function lint(textEditor) {
+	const filePath = textEditor.getPath();
+	const currentDir = pkgDir.sync(path.dirname(filePath));
+
+	if (!currentDir) {
 		return [];
 	}
 
-	// only lint when `xo` is a dependency
-	if (!(pkg.dependencies && pkg.dependencies.xo) &&
-		!(pkg.devDependencies && pkg.devDependencies.xo)) {
+	const {pkg, dir} = findPkg(currentDir);
+
+	if (dir === null || !xoInPkg(pkg)) {
 		return [];
 	}
 
@@ -101,14 +112,31 @@ function lint(textEditor) {
 	});
 }
 
+function fix(editor) {
+	if (!editor) {
+		return;
+	}
+
+	let report;
+
+	allowUnsafeNewFunction(() => {
+		report = lintText(editor.getText(), {
+			fix: true,
+			cwd: path.dirname(editor.getPath())
+		});
+	});
+
+	const output = report.results[0].output;
+
+	if (output) {
+		setText(output);
+	}
+}
+
 export function provideLinter() {
 	return {
 		name: 'XO',
-		grammarScopes: [
-			'source.js',
-			'source.jsx',
-			'source.js.jsx'
-		],
+		grammarScopes: SUPPORTED_SCOPES,
 		scope: 'file',
 		lintOnFly: true,
 		lint
@@ -120,31 +148,34 @@ export function activate() {
 
 	this.subscriptions = new CompositeDisposable();
 	this.subscriptions.add(atom.commands.add('atom-text-editor', {
-		'XO:Fix': () => {
-			const editor = atom.workspace.getActiveTextEditor();
-
-			if (!editor) {
-				return;
-			}
-
-			let report;
-
-			allowUnsafeNewFunction(() => {
-				report = lintText(editor.getText(), {
-					fix: true,
-					cwd: path.dirname(editor.getPath())
-				});
-			});
-
-			const output = report.results[0].output;
-
-			if (output) {
-				setText(output);
-			}
-		}
+		'XO:Fix': () => fix(atom.workspace.getActiveTextEditor())
 	}));
+
+	this.subscriptions.add(
+		atom.workspace.observeTextEditors(editor => {
+			editor.getBuffer().onWillSave(() => {
+				const isJS = SUPPORTED_SCOPES.includes(editor.getGrammar().scopeName);
+				const shouldFixOnSave = atom.config.get('linter-xo.fixOnSave');
+
+				const filePath = editor.getPath();
+				const {pkg} = findPkg(pkgDir.sync(path.dirname(filePath)));
+				const dependsOnXO = pkg && xoInPkg(pkg);
+
+				if (isJS && shouldFixOnSave && dependsOnXO) {
+					fix(editor);
+				}
+			});
+		})
+	);
 }
 
 export function deactivate() {
 	this.subscriptions.dispose();
 }
+
+export const config = {
+	fixOnSave: {
+		type: 'boolean',
+		default: false
+	}
+};
