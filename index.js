@@ -48,7 +48,7 @@ function lint(textEditor) {
 
 	const {pkg, dir} = findPkg(currentDir);
 
-	if (dir === null || !xoInPkg(pkg)) {
+	if (!dir || !xoInPkg(pkg)) {
 		return [];
 	}
 
@@ -113,10 +113,6 @@ function lint(textEditor) {
 }
 
 function fix(editor) {
-	if (!editor) {
-		return;
-	}
-
 	let report;
 
 	allowUnsafeNewFunction(() => {
@@ -148,7 +144,15 @@ export function activate() {
 
 	this.subscriptions = new CompositeDisposable();
 	this.subscriptions.add(atom.commands.add('atom-text-editor', {
-		'XO:Fix': () => fix(atom.workspace.getActiveTextEditor())
+		'XO:Fix': () => {
+			const editor = atom.workspace.getActiveTextEditor();
+
+			if (!editor) {
+				return;
+			}
+
+			fix(editor);
+		}
 	}));
 
 	this.subscriptions.add(
