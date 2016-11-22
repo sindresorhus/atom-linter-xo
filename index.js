@@ -160,9 +160,14 @@ export function activate() {
 			editor.getBuffer().onWillSave(() => {
 				const isJS = SUPPORTED_SCOPES.includes(editor.getGrammar().scopeName);
 				const shouldFixOnSave = atom.config.get('linter-xo.fixOnSave');
-
 				const filePath = editor.getPath();
-				const {pkg} = findPkg(pkgDir.sync(path.dirname(filePath)));
+				const dir = pkgDir.sync(path.dirname(filePath));
+
+				if (!dir) {
+					return;
+				}
+
+				const {pkg} = findPkg(dir);
 				const dependsOnXO = pkg && xoInPkg(pkg);
 
 				if (isJS && shouldFixOnSave && dependsOnXO) {
