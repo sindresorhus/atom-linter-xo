@@ -40,8 +40,7 @@ export function activate() {
 					return;
 				}
 
-				const text = editor.getText();
-				return fix(editor)(text);
+				return fix(editor)(editor.getText());
 			});
 		})
 	);
