@@ -30,6 +30,7 @@
     "eslint-rule-documentation": "^1.0.0",
     "load-json-file": "^2.0.0",
     "loophole": "^1.1.0",
+    "p-props": "^1.0.0",
     "pkg-dir": "^1.0.0",
     "xo": "^0.17.0"
   },
