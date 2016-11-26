@@ -1,0 +1,6 @@
+{
+  "name": "delegated/enabled",
+  "devDependencies": {
+    "xo": "*"
+  }
+}
