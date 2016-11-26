@@ -1,6 +1,13 @@
+/** @babel */
 import path from 'path';
 import tmp from 'tmp';
 import MockEditor from './mock-editor';
+
+export const files = {
+	bad: getFile('bad'),
+	empty: getFile('empty'),
+	fixable: getFile('fixable')
+};
 
 export const paths = {
 	disabled: getPath('disabled'),
@@ -16,6 +23,11 @@ export const editors = {
 	delegated: withPath('delegated'),
 	enabled: withPath('enabled')
 };
+
+// (file: string) => string
+function getFile(name) {
+	return require.resolve(path.join(getPath('enabled'), name));
+}
 
 // (base: string) => string
 function getPath(base) {

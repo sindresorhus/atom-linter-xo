@@ -1,5 +1,12 @@
 language: node_js
 node_js:
   - 'node'
+before_script:
+  - bash <(curl -s https://raw.githubusercontent.com/wooorm/atom-travis/master/install.sh)
+  - export DISPLAY=":99"
+script:
+  - npm test
+  - npm run rebuild
+  - apm test
 env:
   - CC=clang CXX=clang++ npm_config_clang=1

@@ -16,6 +16,7 @@
   "scripts": {
     "lint": "xo",
     "pretest": "npm run lint",
+    "rebuild": "electron-rebuild -v $(atom -v | grep Electron | sed -e 's/^Electron: //')",
     "test": "ava"
   },
   "keywords": [
