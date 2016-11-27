@@ -1,4 +1,5 @@
 import path from 'path';
+import tmp from 'tmp';
 import MockEditor from './mock-editor';
 
 export const paths = {
@@ -18,6 +19,9 @@ export const editors = {
 
 // (base: string) => string
 function getPath(base) {
+	if (base === 'disabled') {
+		return path.join(tmp.dirSync().name.toLowerCase());
+	}
 	return path.join(process.cwd(), 'fixtures', base);
 }
 
