@@ -1,3 +1,4 @@
+/** @babel */
 import assert from 'assert';
 import TextBuffer from 'text-buffer';
 
