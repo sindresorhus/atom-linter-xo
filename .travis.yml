@@ -1,3 +1,5 @@
 language: node_js
 node_js:
   - 'node'
+env:
+  - CC=clang CXX=clang++ npm_config_clang=1

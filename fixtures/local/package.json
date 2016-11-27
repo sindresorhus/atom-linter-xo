@@ -1,0 +1,6 @@
+{
+  "name": "local",
+  "devDependencies": {
+    "xo": "*"
+  }
+}
