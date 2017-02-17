@@ -8,7 +8,8 @@ import lint from './lib/lint';
 const SUPPORTED_SCOPES = [
 	'source.js',
 	'source.jsx',
-	'source.js.jsx'
+	'source.js.jsx',
+	'source.js.embedded.html'
 ];
 
 export function activate() {
