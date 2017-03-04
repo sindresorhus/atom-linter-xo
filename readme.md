@@ -1,4 +1,4 @@
-# linter-xo
+# linter-xo [![Build Status](https://travis-ci.org/sindresorhus/atom-linter-xo.svg?branch=master)](https://travis-ci.org/sindresorhus/atom-linter-xo)
 
 > [Linter](https://github.com/atom-community/linter) for [XO](https://github.com/sindresorhus/xo)
 
