@@ -1,7 +1,7 @@
 /** @babel */
 /* eslint-env atom, jasmine */
 /* global waitsForPromise */
-import {files} from './fixtures';
+import {files} from './mocks';
 import {provideLinter} from '.';
 
 describe('xo provider for linter', () => {

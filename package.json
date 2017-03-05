@@ -14,7 +14,7 @@
     "atom": ">=1.0.11"
   },
   "scripts": {
-    "lint": "xo",
+    "lint": "xo --ignore='mocks/**/*'",
     "pretest": "npm run lint",
     "rebuild": "electron-rebuild -v $(atom -v | grep Electron | sed -e 's/^Electron: //')",
     "test": "ava"
@@ -36,7 +36,7 @@
     "p-props": "^1.0.0",
     "pkg-dir": "^1.0.0",
     "resolve-from": "^2.0.0",
-    "xo": "^0.18.0-pre.0"
+    "xo": "^0.18.0-pre.1"
   },
   "devDependencies": {
     "ava": "^0.17.0",

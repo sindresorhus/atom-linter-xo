@@ -34,7 +34,7 @@ function getPath(base) {
 	if (base === 'disabled') {
 		return path.join(tmp.dirSync().name.toLowerCase());
 	}
-	return path.join(process.cwd(), 'fixtures', base);
+	return path.join(__dirname, base);
 }
 
 // (base: string) => (text: string) => MockEditor<text, base>
