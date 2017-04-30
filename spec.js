@@ -39,9 +39,10 @@ describe('xo provider for linter', () => {
 			waitsForPromise(async () => {
 				const editor = await atom.workspace.open(files.bad);
 				const [message] = await lint(editor);
-				expect(message.filePath).toEqual(files.bad);
-				expect(message.type).toEqual('Error');
-				expect(message.html).toEqual('<span>Strings must use singlequote. (<a href=http://eslint.org/docs/rules/quotes>quotes</a>)</span>');
+				expect(message.location.file).toEqual(files.bad);
+				expect(message.severity).toEqual('error');
+				expect(message.excerpt).toEqual('Strings must use singlequote.');
+				expect(message.url).toEqual('http://eslint.org/docs/rules/quotes');
 			});
 		});
 	});
