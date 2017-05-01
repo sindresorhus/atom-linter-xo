@@ -63,7 +63,7 @@ export function provideLinter() {
 		name: 'XO',
 		grammarScopes: SUPPORTED_SCOPES,
 		scope: 'file',
-		lintOnFly: true,
+		lintsOnChange: true,
 		lint: editor => lint(editor)(editor.getText()).then(format(editor))
 	};
 }
