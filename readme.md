@@ -2,7 +2,7 @@
 
 > [Linter](https://github.com/atom-community/linter) for [XO](https://github.com/sindresorhus/xo)
 
-![](https://github.com/sindresorhus/atom-linter-xo/raw/master/screenshot.png)
+![](screenshot.png)
 
 
 ## Install
