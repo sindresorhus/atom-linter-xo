@@ -35,7 +35,7 @@
     "p-props": "^1.0.0",
     "pkg-dir": "^1.0.0",
     "resolve-from": "^3.0.0",
-    "xo": "^0.18.0"
+    "xo": "^0.18.2"
   },
   "devDependencies": {
     "ava": "^0.19.1",
