@@ -28,8 +28,7 @@ export function activate() {
 		}
 	}));
 
-	this.subscriptions.add(
-		atom.workspace.observeTextEditors(editor => {
+	this.subscriptions.add(atom.workspace.observeTextEditors(editor => {
 			editor.getBuffer().onWillSave(() => {
 				if (!atom.config.get('linter-xo.fixOnSave')) {
 					return;
@@ -43,8 +42,7 @@ export function activate() {
 
 				return fix(editor)(editor.getText());
 			});
-		})
-	);
+	}));
 }
 
 export const config = {
