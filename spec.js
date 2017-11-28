@@ -42,7 +42,7 @@ describe('xo provider for linter', () => {
 				expect(message.location.file).toEqual(files.bad);
 				expect(message.severity).toEqual('error');
 				expect(message.excerpt).toEqual('Strings must use singlequote.');
-				expect(message.url).toEqual('http://eslint.org/docs/rules/quotes');
+				expect(message.url).toEqual('https://eslint.org/docs/rules/quotes');
 			});
 		});
 	});
@@ -78,6 +78,37 @@ describe('xo provider for linter', () => {
 
 				const messages = await lint(fixed);
 				expect(messages.length).toBe(0);
+			});
+		});
+
+		it('exclude default rules configured in rulesToDisableWhileFixingOnSave', () => {
+			waitsForPromise(async () => {
+				atom.config.set('linter-xo.fixOnSave', true);
+				const expected = `// uncapitalized comment\n`;
+				const editor = await atom.workspace.open(files.saveFixableDefault);
+				editor.save();
+
+				const actual = editor.getText();
+				expect(actual).toBe(expected);
+
+				const messages = await lint(editor);
+				expect(messages.length).toBe(1);
+			});
+		});
+
+		it('exclude rules configured in rulesToDisableWhileFixingOnSave', () => {
+			waitsForPromise(async () => {
+				atom.config.set('linter-xo.fixOnSave', true);
+				atom.config.set('linter-xo.rulesToDisableWhileFixingOnSave', ['spaced-comment']);
+				const expected = `//Uncapitalized comment\n`;
+				const editor = await atom.workspace.open(files.saveFixable);
+				editor.save();
+
+				const actual = editor.getText();
+				expect(actual).toBe(expected);
+
+				const messages = await lint(editor);
+				expect(messages.length).toBe(1);
 			});
 		});
 

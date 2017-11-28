@@ -6,7 +6,9 @@ import MockEditor from './mock-editor';
 export const files = {
 	bad: getFile('bad'),
 	empty: getFile('empty'),
-	fixable: getFile('fixable')
+	fixable: getFile('fixable'),
+	saveFixable: getFile('save-fixable'),
+	saveFixableDefault: getFile('save-fixable-default')
 };
 
 export const paths = {
