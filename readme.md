@@ -1,6 +1,6 @@
-# linter-xo [![Build Status](https://travis-ci.org/sindresorhus/atom-linter-xo.svg?branch=master)](https://travis-ci.org/sindresorhus/atom-linter-xo)
+# linter-xo [![Build Status](https://travis-ci.org/xojs/atom-linter-xo.svg?branch=master)](https://travis-ci.org/xojs/atom-linter-xo)
 
-> [Linter](https://github.com/atom-community/linter) for [XO](https://github.com/sindresorhus/xo)
+> [Linter](https://github.com/atom-community/linter) for [XO](https://github.com/xojs/xo)
 
 ![](screenshot.png)
 
@@ -18,11 +18,11 @@ Or, Settings → Install → Search for `linter-xo`.
 
 Just write some code.
 
-Settings can be found in the `Linter` package settings. XO [config](https://github.com/sindresorhus/xo#config) should be defined in package.json.
+Settings can be found in the `Linter` package settings. XO [config](https://github.com/xojs/xo#config) should be defined in package.json.
 
 **Note that it will only lint when XO is a dependency/devDependency in package.json.**<br>
 This is to ensure it doesn't activate and conflict on projects using another linter, like ESLint.<br>
-[We're considering a way to manually enable XO.](https://github.com/sindresorhus/atom-linter-xo/issues/21)
+[We're considering a way to manually enable XO.](https://github.com/xojs/atom-linter-xo/issues/21)
 
 ### Fix
 
