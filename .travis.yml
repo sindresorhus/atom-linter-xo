@@ -1,12 +1,17 @@
 language: node_js
 node_js:
   - 'node'
-before_script:
-  - bash <(curl -s https://raw.githubusercontent.com/wooorm/atom-travis/master/install.sh)
-  - export DISPLAY=":99"
+install:
+  - curl -s -O https://raw.githubusercontent.com/atom/ci/master/build-package.sh
+  - chmod u+x build-package.sh
+  - ./build-package.sh
 script:
-  - npm test
-  - npm run rebuild
-  - apm test
-env:
-  - CC=clang CXX=clang++ npm_config_clang=1
+  - npm rebuild
+  - npm run test
+addons:
+  apt:
+    packages:
+    - build-essential
+    - fakeroot
+    - git
+    - libsecret-1-dev

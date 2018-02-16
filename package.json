@@ -16,7 +16,6 @@
 	"scripts": {
 		"lint": "xo --ignore='mocks/**/*'",
 		"pretest": "npm run lint",
-		"rebuild": "electron-rebuild -v $(atom -v | grep Electron | sed -e 's/^Electron: //')",
 		"test": "ava"
 	},
 	"keywords": [
@@ -40,7 +39,6 @@
 	"devDependencies": {
 		"ava": "^0.19.1",
 		"babel-register": "^6.18.0",
-		"electron-rebuild": "^1.4.0",
 		"proxyquire": "^1.7.10",
 		"text-buffer": "^11.4.0",
 		"tmp": "0.0.31"
