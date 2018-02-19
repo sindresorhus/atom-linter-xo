@@ -28,29 +28,36 @@ export function activate() {
 		}
 	}));
 
-	this.subscriptions.add(
-		atom.workspace.observeTextEditors(editor => {
-			editor.getBuffer().onWillSave(() => {
-				if (!atom.config.get('linter-xo.fixOnSave')) {
-					return;
-				}
+	this.subscriptions.add(atom.workspace.observeTextEditors(editor => {
+		editor.getBuffer().onWillSave(() => {
+			if (!atom.config.get('linter-xo.fixOnSave')) {
+				return;
+			}
 
-				const {scopeName} = editor.getGrammar();
+			const {scopeName} = editor.getGrammar();
 
-				if (!SUPPORTED_SCOPES.includes(scopeName)) {
-					return;
-				}
+			if (!SUPPORTED_SCOPES.includes(scopeName)) {
+				return;
+			}
 
-				return fix(editor)(editor.getText());
-			});
-		})
-	);
+			return fix(editor)(editor.getText(), atom.config.get('linter-xo.rulesToDisableWhileFixingOnSave'));
+		});
+	}));
 }
 
 export const config = {
 	fixOnSave: {
 		type: 'boolean',
 		default: false
+	},
+	rulesToDisableWhileFixingOnSave: {
+		title: 'Disable specific rules while fixing on save',
+		description: 'Prevent rules from being auto-fixed by XO. Applies to fixes made on save but not when running the `XO:Fix` command.',
+		type: 'array',
+		default: ['capitalized-comments', 'ava/no-only-test'],
+		items: {
+			type: 'string'
+		}
 	}
 };
 
