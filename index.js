@@ -54,7 +54,7 @@ export const config = {
 		title: 'Disable specific rules while fixing on save',
 		description: 'Prevent rules from being auto-fixed by XO. Applies to fixes made on save but not when running the `XO:Fix` command.',
 		type: 'array',
-		default: ['capitalized-comments', 'ava/no-only-test'],
+		default: ['capitalized-comments', 'ava/no-only-test', 'ava/no-skip-test'],
 		items: {
 			type: 'string'
 		}
