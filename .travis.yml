@@ -1,6 +1,10 @@
 language: node_js
 node_js:
   - 'node'
+env:
+  global:
+    - CC=clang
+    - CXX=clang++
 install:
   - curl -s -O https://raw.githubusercontent.com/atom/ci/master/build-package.sh
   - chmod u+x build-package.sh
