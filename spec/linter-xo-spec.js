@@ -70,7 +70,7 @@ describe('xo provider for linter', () => {
 	describe('fixes fixable.js and', () => {
 		it('produces text without errors', () => {
 			waitsForPromise(async () => {
-				const expected = `const foo = 'bar';\n\nconsole.log(foo);\n\nconsole.log(foo);\n`;
+				const expected = 'const foo = \'bar\';\n\nconsole.log(foo);\n\nconsole.log(foo);\n';
 				const editor = await atom.workspace.open(files.fixable);
 				const fixed = await fix(editor);
 				const actual = fixed.getText();
@@ -84,7 +84,7 @@ describe('xo provider for linter', () => {
 		it('exclude default rules configured in rulesToDisableWhileFixingOnSave', () => {
 			waitsForPromise(async () => {
 				atom.config.set('linter-xo.fixOnSave', true);
-				const expected = `// uncapitalized comment\n`;
+				const expected = '// uncapitalized comment\n';
 				const editor = await atom.workspace.open(files.saveFixableDefault);
 				editor.save();
 
@@ -100,7 +100,7 @@ describe('xo provider for linter', () => {
 			waitsForPromise(async () => {
 				atom.config.set('linter-xo.fixOnSave', true);
 				atom.config.set('linter-xo.rulesToDisableWhileFixingOnSave', ['spaced-comment']);
-				const expected = `//Uncapitalized comment\n`;
+				const expected = '//Uncapitalized comment\n';
 				const editor = await atom.workspace.open(files.saveFixable);
 				editor.save();
 
