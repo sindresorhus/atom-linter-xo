@@ -36,6 +36,7 @@ function getPath(base) {
 	if (base === 'disabled') {
 		return path.join(tmp.dirSync().name.toLowerCase());
 	}
+
 	return path.join(__dirname, base);
 }
 
