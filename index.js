@@ -9,7 +9,6 @@ const SUPPORTED_SCOPES = [
 	'source.js',
 	'source.jsx',
 	'source.js.jsx',
-	'source.js.embedded.html',
 	'source.ts',
 	'source.tsx'
 ];
