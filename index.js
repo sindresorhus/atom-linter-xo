@@ -16,6 +16,7 @@ export function activate() {
 	install('linter-xo');
 
 	this.subscriptions = new CompositeDisposable();
+
 	this.subscriptions.add(atom.commands.add('atom-text-editor', {
 		'XO:Fix': () => {
 			const editor = atom.workspace.getActiveTextEditor();
@@ -54,7 +55,11 @@ export const config = {
 		title: 'Disable specific rules while fixing on save',
 		description: 'Prevent rules from being auto-fixed by XO. Applies to fixes made on save but not when running the `XO:Fix` command.',
 		type: 'array',
-		default: ['capitalized-comments', 'ava/no-only-test', 'ava/no-skip-test'],
+		default: [
+			'capitalized-comments',
+			'ava/no-only-test',
+			'ava/no-skip-test'
+		],
 		items: {
 			type: 'string'
 		}
@@ -71,6 +76,9 @@ export function provideLinter() {
 		grammarScopes: SUPPORTED_SCOPES,
 		scope: 'file',
 		lintsOnChange: true,
-		lint: editor => lint(editor)(editor.getText()).then(format(editor))
+		lint: async editor => {
+			const result = await lint(editor)(editor.getText());
+			return format(editor)(result);
+		}
 	};
 }

@@ -7,16 +7,15 @@ import {provideLinter} from '..';
 describe('xo provider for linter', () => {
 	const {lint} = provideLinter();
 	const cmd = (editor, name) => atom.commands.dispatch(atom.views.getView(editor), name);
-	const fix = editor => {
-		return Promise.resolve()
-			.then(() => {
-				cmd(editor, 'XO:Fix');
-				return new Promise(resolve => {
-					editor.onDidChange(() => {
-						resolve(editor);
-					});
-				});
+
+	const fix = async editor => {
+		cmd(editor, 'XO:Fix');
+
+		return new Promise(resolve => {
+			editor.onDidChange(() => {
+				resolve(editor);
 			});
+		});
 	};
 
 	beforeEach(() => {
