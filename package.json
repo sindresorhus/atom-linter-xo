@@ -36,8 +36,8 @@
 		"xo": "^0.24.0"
 	},
 	"devDependencies": {
-		"@babel/register": "^7.0.0",
-		"ava": "^1.1.0",
+		"ava": "^3.13.0",
+		"esm": "^3.2.25",
 		"proxyquire": "^2.0.1",
 		"text-buffer": "^13.15.2",
 		"tmp": "0.0.33"
@@ -54,12 +54,7 @@
 	},
 	"ava": {
 		"require": [
-			"@babel/register"
-		]
-	},
-	"babel": {
-		"presets": [
-			"@ava/stage-4"
+			"esm"
 		]
 	},
 	"xo": {
