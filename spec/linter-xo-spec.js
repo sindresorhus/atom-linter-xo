@@ -1,8 +1,7 @@
-/** @babel */
 /* eslint-env atom, jasmine */
 /* global waitsForPromise */
-import {files} from '../mocks';
-import {provideLinter} from '..';
+const {files} = require('../mocks');
+const {provideLinter} = require('..');
 
 describe('xo provider for linter', () => {
 	const {lint} = provideLinter();
