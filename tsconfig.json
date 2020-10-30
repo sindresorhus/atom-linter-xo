@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"allowJs": true,
+		"esModuleInterop": true,
+		"target": "es2017",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"noEmit": true,
+		"resolveJsonModule": true,
+		"strict": true
+	}
+}
