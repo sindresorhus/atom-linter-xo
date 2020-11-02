@@ -1,6 +1,9 @@
 language: node_js
 node_js:
-  - 'node'
+  - '12'
+install: skip
+cache:
+  npm: false
 env:
   global:
     - CC=clang
