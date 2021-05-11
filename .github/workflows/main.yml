@@ -37,8 +37,8 @@ jobs:
         with:
           version: ${{ matrix.channel }}
 
-      - uses: microsoft/setup-msbuild@v1.0.2
-        if: ${{ matrix.os == 'windows-latest' }}
+      - if: ${{ matrix.os == 'windows-latest' }}
+        run: npm config set msvs_version 2019
 
       - name: Install dependencies
         run: apm install
