@@ -15,7 +15,6 @@ jobs:
           node-version: 12
       - run: npm install
       - run: npm test
-
   test-atom:
     name: ${{ matrix.channel }} - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -29,21 +28,16 @@ jobs:
         channel:
           - stable
           - beta
-
     steps:
       - uses: actions/checkout@v2
-
       - uses: UziTech/action-setup-atom@v2
         with:
           version: ${{ matrix.channel }}
-
       - if: ${{ matrix.os == 'windows-latest' }}
         uses: microsoft/setup-msbuild@v1.0.2
         with:
           vs-version: '[14.0,)'
-
       - name: Install dependencies
         run: apm install
-
       - name: Run tests
         run: atom --test spec
