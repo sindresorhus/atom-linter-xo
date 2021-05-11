@@ -14,7 +14,7 @@
 		"atom": ">=1.34.0"
 	},
 	"scripts": {
-		"lint": "xo",
+		"lint": "xo --ignore='mocks/**/*'",
 		"pretest": "npm run lint",
 		"test": "ava"
 	},
@@ -60,9 +60,6 @@
 	"xo": {
 		"globals": [
 			"atom"
-		],
-		"ignores": [
-			"mocks/**/*"
 		],
 		"overrides": [
 			{
