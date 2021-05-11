@@ -33,7 +33,7 @@ jobs:
       - uses: UziTech/action-setup-atom@v2
         with:
           version: ${{ matrix.channel }}
-      - if: ${{ matrix.os == 'windows-latest' }}
+      - if: matrix.os == 'windows-latest'
         uses: microsoft/setup-msbuild@v1.0.2
         with:
           vs-version: '[14.0,)'
