@@ -38,7 +38,7 @@ jobs:
           version: ${{ matrix.channel }}
 
       - if: ${{ matrix.os == 'windows-latest' }}
-        run: npm config set msvs_version 2019
+        run: apm config set msvs_version 2019
 
       - name: Install dependencies
         run: apm install
