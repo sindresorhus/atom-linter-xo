@@ -1,4 +1,3 @@
-/* eslint-env atomtest, jasmine */
 const {files} = require('../mocks');
 const {provideLinter} = require('..');
 
