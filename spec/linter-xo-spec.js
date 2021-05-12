@@ -59,6 +59,15 @@ describe('xo provider for linter', () => {
 		});
 	});
 
+	describe('checks relative-path.js and', () => {
+		it('shows no error notifications', async () => {
+			const editor = await atom.workspace.open(files.relativePath);
+			await lint(editor);
+			const errorNotifications = atom.notifications.getNotifications().filter(notification => notification.getType() === 'error');
+			expect(errorNotifications.length).toBe(0);
+		});
+	});
+
 	describe('fixes fixable.js and', () => {
 		it('produces text without errors', async () => {
 			const expected = 'const foo = \'bar\';\n\nconsole.log(foo);\n\nconsole.log(foo);\n';
