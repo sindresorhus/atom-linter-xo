@@ -1,9 +1,8 @@
-/** @babel */
-import path from 'path';
-import tmp from 'tmp';
-import MockEditor from './mock-editor';
+const path = require('path')
+const tmp = require('tmp')
+const MockEditor = require('./mock-editor')
 
-export const files = {
+module.exports.files = {
 	bad: getFile('bad'),
 	empty: getFile('empty'),
 	fixable: getFile('fixable'),
@@ -12,7 +11,7 @@ export const files = {
 	saveFixableDefault: getFile('save-fixable-default')
 };
 
-export const paths = {
+module.exports.paths = {
 	disabled: getPath('disabled'),
 	delegated: getPath('delegated'),
 	'delegated/disabled': getPath('delegated/disabled'),
@@ -21,7 +20,7 @@ export const paths = {
 	local: getPath('local')
 };
 
-export const editors = {
+module.exports.editors = {
 	disabled: withPath('disabled'),
 	delegated: withPath('delegated'),
 	enabled: withPath('enabled')

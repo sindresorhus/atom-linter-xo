@@ -1,9 +1,8 @@
-/** @babel */
-import {CompositeDisposable} from 'atom';
-import {install} from 'atom-package-deps';
-import fix from './lib/fix.js';
-import format from './lib/format.js';
-import lint from './lib/lint.js';
+const {CompositeDisposable} = require('atom');
+const {install} = require('atom-package-deps');
+const fix = require('./lib/fix.js');
+const format = require('./lib/format.js');
+const lint = require('./lib/lint.js');
 
 const SUPPORTED_SCOPES = [
 	'source.js',
@@ -13,7 +12,7 @@ const SUPPORTED_SCOPES = [
 	'source.tsx'
 ];
 
-export function activate() {
+module.exports.activate = function () {
 	install('linter-xo');
 
 	this.subscriptions = new CompositeDisposable();
@@ -45,9 +44,9 @@ export function activate() {
 			return fix(editor)(editor.getText(), atom.config.get('linter-xo.rulesToDisableWhileFixingOnSave'));
 		});
 	}));
-}
+};
 
-export const config = {
+module.exports.config = {
 	fixOnSave: {
 		type: 'boolean',
 		default: false
@@ -67,11 +66,11 @@ export const config = {
 	}
 };
 
-export function deactivate() {
+module.exports.deactivate = function () {
 	this.subscriptions.dispose();
-}
+};
 
-export function provideLinter() {
+module.exports.provideLinter = function () {
 	return {
 		name: 'XO',
 		grammarScopes: SUPPORTED_SCOPES,
@@ -82,4 +81,4 @@ export function provideLinter() {
 			return format(editor)(result);
 		}
 	};
-}
+};
