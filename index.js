@@ -1,9 +1,9 @@
 /** @babel */
 import {CompositeDisposable} from 'atom';
 import {install} from 'atom-package-deps';
-import fix from './lib/fix';
-import format from './lib/format';
-import lint from './lib/lint';
+import fix from './lib/fix.js';
+import format from './lib/format.js';
+import lint from './lib/lint.js';
 
 const SUPPORTED_SCOPES = [
 	'source.js',

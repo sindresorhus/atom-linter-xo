@@ -33,7 +33,7 @@
 		"p-props": "^1.0.0",
 		"pkg-up": "^3.1.0",
 		"resolve-from": "^4.0.0",
-		"xo": "^0.34.0"
+		"xo": "^0.39.0"
 	},
 	"devDependencies": {
 		"ava": "^3.13.0",
@@ -60,6 +60,15 @@
 	"xo": {
 		"globals": [
 			"atom"
+		],
+		"overrides": [
+			{
+				"files": "spec/**/*",
+				"envs": [
+					"atomtest",
+					"jasmine"
+				]
+			}
 		]
 	}
 }
