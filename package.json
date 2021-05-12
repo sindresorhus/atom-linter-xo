@@ -30,8 +30,10 @@
 		"atom-package-deps": "^5.0.0",
 		"eslint-rule-documentation": "^1.0.0",
 		"load-json-file": "^5.1.0",
+		"p-queue": "^6.6.2",
 		"pkg-up": "^3.1.0",
 		"resolve-from": "^4.0.0",
+		"unique-string": "^2.0.0",
 		"xo": "^0.39.0"
 	},
 	"devDependencies": {
