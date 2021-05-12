@@ -7,6 +7,7 @@ export const files = {
 	bad: getFile('bad'),
 	empty: getFile('empty'),
 	fixable: getFile('fixable'),
+	relativePath: getFile('relative-path'),
 	saveFixable: getFile('save-fixable'),
 	saveFixableDefault: getFile('save-fixable-default')
 };
