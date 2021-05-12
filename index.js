@@ -25,7 +25,7 @@ module.exports.activate = function () {
 				return;
 			}
 
-			fix(editor)(editor.getText());
+			fix(editor, lint)(editor.getText());
 		}
 	}));
 
@@ -41,7 +41,7 @@ module.exports.activate = function () {
 				return;
 			}
 
-			return fix(editor)(editor.getText(), atom.config.get('linter-xo.rulesToDisableWhileFixingOnSave'));
+			return fix(editor, lint)(editor.getText(), atom.config.get('linter-xo.rulesToDisableWhileFixingOnSave'));
 		});
 	}));
 };
@@ -77,7 +77,7 @@ module.exports.provideLinter = function () {
 		scope: 'file',
 		lintsOnChange: true,
 		lint: async editor => {
-			const result = await lint(editor)(editor.getText());
+			const result = await lint(editor.getPath())(editor.getText());
 			return format(editor)(result);
 		}
 	};

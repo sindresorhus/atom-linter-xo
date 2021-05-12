@@ -83,7 +83,7 @@ describe('xo provider for linter', () => {
 			atom.config.set('linter-xo.fixOnSave', true);
 			const expected = '// uncapitalized comment\n';
 			const editor = await atom.workspace.open(files.saveFixableDefault);
-			editor.save();
+			await editor.save();
 
 			const actual = editor.getText();
 			expect(actual).toBe(expected);
@@ -97,7 +97,7 @@ describe('xo provider for linter', () => {
 			atom.config.set('linter-xo.rulesToDisableWhileFixingOnSave', ['spaced-comment']);
 			const expected = '//Uncapitalized comment\n';
 			const editor = await atom.workspace.open(files.saveFixable);
-			editor.save();
+			await editor.save();
 
 			const actual = editor.getText();
 			expect(actual).toBe(expected);
