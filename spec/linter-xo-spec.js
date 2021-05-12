@@ -59,7 +59,7 @@ describe('xo provider for linter', () => {
 		});
 	});
 
-	describe('checks relative-path.js and', () => {
+	xdescribe('checks relative-path.js and', () => {
 		it('shows no error notifications', async () => {
 			const editor = await atom.workspace.open(files.relativePath);
 			await lint(editor);
