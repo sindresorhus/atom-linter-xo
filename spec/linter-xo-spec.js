@@ -1,4 +1,4 @@
-const {files} = require('../mocks');
+const {files} = require('../mocks/index.js');
 const {provideLinter} = require('..');
 
 describe('xo provider for linter', () => {

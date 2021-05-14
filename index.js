@@ -2,7 +2,7 @@ const {CompositeDisposable} = require('atom');
 const {install} = require('atom-package-deps');
 const fix = require('./lib/fix.js');
 const format = require('./lib/format.js');
-const {lint, startWorker, stopWorker} = require('./lib/worker');
+const {lint, startWorker, stopWorker} = require('./lib/worker.js');
 
 const SUPPORTED_SCOPES = [
 	'source.js',
