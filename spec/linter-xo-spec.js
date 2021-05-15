@@ -1,4 +1,4 @@
-const {files} = require('../mocks');
+const {files} = require('../mocks/index.js');
 const {provideLinter} = require('..');
 
 describe('xo provider for linter', () => {
@@ -58,7 +58,7 @@ describe('xo provider for linter', () => {
 		});
 	});
 
-	xdescribe('checks relative-path.js and', () => {
+	describe('checks relative-path.js and', () => {
 		it('shows no error notifications', async () => {
 			const editor = await atom.workspace.open(files.relativePath);
 			await lint(editor);

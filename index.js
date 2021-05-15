@@ -2,7 +2,7 @@ const {CompositeDisposable} = require('atom');
 const {install} = require('atom-package-deps');
 const fix = require('./lib/fix.js');
 const format = require('./lib/format.js');
-const lint = require('./lib/lint.js');
+const {lint, startWorker, stopWorker} = require('./lib/worker.js');
 
 const SUPPORTED_SCOPES = [
 	'source.js',
@@ -13,6 +13,7 @@ const SUPPORTED_SCOPES = [
 ];
 
 module.exports.activate = function () {
+	startWorker();
 	install('linter-xo');
 
 	this.subscriptions = new CompositeDisposable();
@@ -68,6 +69,7 @@ module.exports.config = {
 
 module.exports.deactivate = function () {
 	this.subscriptions.dispose();
+	stopWorker();
 };
 
 module.exports.provideLinter = function () {
