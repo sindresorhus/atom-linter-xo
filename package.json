@@ -27,7 +27,7 @@
 	],
 	"dependencies": {
 		"atom-linter": "^10.0.0",
-		"atom-package-deps": "^5.0.0",
+		"atom-package-deps": "^7.0.0",
 		"eslint-rule-documentation": "^1.0.0",
 		"load-json-file": "^5.1.0",
 		"p-limit": "^2.3.0",
@@ -43,7 +43,10 @@
 		"tmp": "0.0.33"
 	},
 	"package-deps": [
-		"linter:2.0.0"
+		{
+			"name": "linter",
+			"minimumVersion": "2.0.0"
+		}
 	],
 	"providedServices": {
 		"linter": {
@@ -54,7 +57,8 @@
 	},
 	"xo": {
 		"globals": [
-			"atom"
+			"atom",
+			"window"
 		],
 		"overrides": [
 			{

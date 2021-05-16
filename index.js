@@ -1,5 +1,4 @@
-const {CompositeDisposable} = require('atom');
-const {install} = require('atom-package-deps');
+const {CompositeDisposable, Disposable} = require('atom');
 const fix = require('./lib/fix.js');
 const format = require('./lib/format.js');
 const {lint, startWorker, stopWorker} = require('./lib/worker.js');
@@ -12,10 +11,18 @@ const SUPPORTED_SCOPES = [
 	'source.tsx'
 ];
 
-module.exports.activate = function () {
-	startWorker();
-	install('linter-xo');
+function install() {
+	const callbackId = window.requestIdleCallback(() => {
+		require('atom-package-deps').install('linter-xo');
+		startWorker();
+	});
 
+	return new Disposable(() => {
+		window.cancelIdleCallback(callbackId);
+	});
+}
+
+module.exports.activate = function () {
 	this.subscriptions = new CompositeDisposable();
 
 	this.subscriptions.add(atom.commands.add('atom-text-editor', {
@@ -45,6 +52,8 @@ module.exports.activate = function () {
 			return fix(editor, lint)(editor.getText(), atom.config.get('linter-xo.rulesToDisableWhileFixingOnSave'));
 		});
 	}));
+
+	this.subscriptions.add(install());
 };
 
 module.exports.config = {
