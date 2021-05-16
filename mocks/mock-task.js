@@ -2,7 +2,7 @@ const {Emitter} = require('event-kit');
 
 const privateSpace = new WeakMap();
 
-module.exports.processMessages = function (task) {
+module.exports.processMessages = task => {
 	const {emitter, messages} = privateSpace.get(task);
 
 	for (const {id, ...message} of messages) {
