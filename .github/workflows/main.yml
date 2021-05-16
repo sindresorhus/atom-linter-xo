@@ -15,6 +15,7 @@ jobs:
           node-version: 12
       - run: npm install
       - run: npm test
+      - uses: codecov/codecov-action@v1
   test-atom:
     name: ${{ matrix.channel }} - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
