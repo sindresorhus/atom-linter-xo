@@ -16,7 +16,7 @@
 	"scripts": {
 		"lint": "xo --ignore='mocks/**/*'",
 		"pretest": "npm run lint",
-		"test": "ava"
+		"test": "nyc ava"
 	},
 	"keywords": [
 		"javascript",
@@ -38,6 +38,7 @@
 	},
 	"devDependencies": {
 		"ava": "^3.13.0",
+		"nyc": "^15.1.0",
 		"proxyquire": "^2.0.1",
 		"text-buffer": "^13.15.2",
 		"tmp": "0.0.33"
@@ -54,6 +55,12 @@
 				"2.0.0": "provideLinter"
 			}
 		}
+	},
+	"nyc": {
+		"reporter": [
+			"text",
+			"lcov"
+		]
 	},
 	"xo": {
 		"globals": [
